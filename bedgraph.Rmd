@@ -1,0 +1,65 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+- generate tracks in appropriate format (such as bed/interact.bed)
+https://genome.ucsc.edu/goldenPath/help/interact.html
+
+```{r}
+library(dplyr)
+#make bedgraph for SNPs
+GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/GWAS/scz2021/PGC3_SCZ_wave3_public.v2_GRCh37.tsv.gz",
+                        select = c("CHR",	"SNP",	"BP", "OR",	"P"), fill=T)
+GWAS
+hist(GWAS$P, breaks = 1000)
+GWAS$neglog10p <- -log10(GWAS$P)
+hist(GWAS$neglog10p, breaks = 1000)
+GWAS[GWAS$P<10^-8,]
+
+# bedgraph format http://genome.ucsc.edu/goldenPath/help/bedgraph.html
+# chromA  chromStartA  chromEndA  dataValueA
+GWAS$CHR<-paste0("chr",GWAS$CHR)
+GWAS$start<-GWAS$BP-1
+
+
+cat("track type=bedGraph name=PGC3_SCZ_wave3_public.v2 description=PGC3_SCZ_wave3_public.v2 visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph",append=F)#viewLimits=lower:upper maxHeightPixels=max:default:min  yLineMark=real-value yLineOnOff=on|off windowingFunction=maximum|mean|minimum smoothingWindow=off|2-16
+#file.show("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC browser track files/PGC3_SCZ_wave3_public.v2.bedgraph")
+data.table::fwrite(
+  x = dplyr::select(.data = GWAS, CHR, start, BP, neglog10p) %>% na.exclude(), 
+  append = T, sep = "\t", col.names = F, row.names = F, quote = F,
+  file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph")
+```
+
+- make sure bed files are sorted
+
+``` {bash}
+cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
+
+bedtools sort -i  PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph > PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph
+
+
+```
+
+- use bedToBigBed to convert files to bigData format
+	- for interact.bed files use: 
+	
+```{bash}
+cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/
+
+bedToBigBed -type=bed3+1 /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes PGC3_SCZ_wave3_public.v2_sort.bb
+
+```
+
+
+- follow instructions on:
+https://genome.ucsc.edu/goldenPath/help/hgTrackHubHelp.html#Hosting
+
+- make sure all URLs in the hub txt files are in "raw" format (if using GitHub to host the trackhub)
+- to connect to the trackhub use the URL to the hub.txt
+https://raw.githubusercontent.com/radinagg/UCSC_trackhub/master/hub.txt
+
+
+
