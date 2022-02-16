@@ -37,7 +37,7 @@ data.table::fwrite(
 
 - make sure bed files are sorted
 
-``` {bash bedgraph: sort file, remove duplicated lines, convert to wig, upload}
+``` {bash bedgraph into bigWig: sort file, remove duplicated lines, convert to wig, upload}
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 
 <!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
@@ -50,6 +50,20 @@ bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/PGC3_SCZ_
 rsync -P PGC3_SCZ_wave3_public.v2_sort.bw emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
 ```
 
+
+
+``` {bash bed into bigBed: sort file, remove duplicated lines, convert to bb, upload}
+cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
+
+<!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
+sort -k1,3 -u brainSNVs_hg19_UCSC.bed | bedtools sort -i > brainSNVs_hg19_UCSC_sort.bed
+
+
+bedToBigBed -type=bed6+4 brainSNVs_hg19_UCSC_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes brainSNVs_hg19_UCSC_sort.bb
+
+<!-- copy onto shire -->
+rsync -P brainSNVs_hg19_UCSC_sort.bb emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
+```
 
 the link to load the track will be trackhub.genereg.net/eosimo/
 
