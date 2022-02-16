@@ -6,7 +6,7 @@ yLineMark 8
 color 128,0,128
 gridDefault on
 maxHeightPixels 150:100:10
-bigDataUrl https://figshare.com/ndownloader/files/34079465
+bigDataUrl http://trackhub.genereg.net/eosimo/PGC3_SCZ_wave3_public.v2_sort.bw
 shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
