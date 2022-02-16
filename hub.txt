@@ -3,4 +3,4 @@ shortLabel Schizophrenia HCM GWAS hub 2
 longLabel Schizophrenia HCM GWAS hub 2
 genomesFile https://raw.githubusercontent.com/emosyne/UCSCtracks/main/genomes.txt
 email e.osimo@ic.ac.uk
-descriptionUrl https://raw.githubusercontent.com/radinagg/UCSC_trackhub/master/README.html
+descriptionUrl https://raw.githubusercontent.com/emosyne/UCSCtracks/main/README.html
