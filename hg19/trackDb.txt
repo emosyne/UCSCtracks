@@ -6,7 +6,7 @@ yLineMark 8
 color 128,0,128
 gridDefault on
 maxHeightPixels 100:16:8
-bigDataUrl https://figshare.com/s/543f98a0b34e20e0d941
+bigDataUrl https://figshare.com/ndownloader/files/34079465
 shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
