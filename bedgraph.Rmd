@@ -14,6 +14,7 @@ library(dplyr)
 GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/GWAS/scz2021/PGC3_SCZ_wave3_public.v2_GRCh37.tsv.gz",
                         select = c("CHR",	"SNP",	"BP", "OR",	"P"), fill=T)
 GWAS
+GWAS[GWAS$CHR=="1" & GWAS$BP==249220525,]
 hist(GWAS$P, breaks = 1000)
 GWAS$neglog10p <- -log10(GWAS$P)
 hist(GWAS$neglog10p, breaks = 1000)
@@ -23,13 +24,13 @@ GWAS[GWAS$P<10^-8,]
 # chromA  chromStartA  chromEndA  dataValueA
 GWAS$CHR<-paste0("chr",GWAS$CHR)
 GWAS$start<-GWAS$BP-1
-
+GWAS[GWAS$CHR=="chr1" & GWAS$BP==249220525,]
 
 cat("track type=bedGraph name=PGC3_SCZ_wave3_public.v2 description=PGC3_SCZ_wave3_public.v2 visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph",append=F)#viewLimits=lower:upper maxHeightPixels=max:default:min  yLineMark=real-value yLineOnOff=on|off windowingFunction=maximum|mean|minimum smoothingWindow=off|2-16
 #file.show("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC browser track files/PGC3_SCZ_wave3_public.v2.bedgraph")
 data.table::fwrite(
   x = dplyr::select(.data = GWAS, CHR, start, BP, neglog10p) %>% na.exclude(), 
-  append = T, sep = "\t", col.names = F, row.names = F, quote = F,
+  append = T, sep = "\t", col.names = F, row.names = F, quote = F, scipen = 999,
   file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph")
 ```
 
@@ -38,7 +39,8 @@ data.table::fwrite(
 ``` {bash}
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 
-bedtools sort -i  PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph > PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph
+<!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
+sort -k1,3 -u PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph | bedtools sort -i > PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph
 
 
 ```
@@ -49,7 +51,7 @@ bedtools sort -i  PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph > PGC3_SCZ_wave3_publ
 ```{bash}
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/
 
-bedToBigBed -type=bed3+1 /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes PGC3_SCZ_wave3_public.v2_sort.bb
+bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes PGC3_SCZ_wave3_public.v2_sort.bw
 
 ```
 
