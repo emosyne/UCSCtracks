@@ -1,7 +1,14 @@
 track PGC3_SCZ_wave3_public.v2_hg19
+type bigWig 0 39.18
+autoScale on
+yLineOnOff on
+yLineMark 8
+color 128,0,128
+gridDefault on
+maxHeightPixels 100:16:8
 bigDataUrl https://figshare.com/s/543f98a0b34e20e0d941
 shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
-type bigWig
+
 

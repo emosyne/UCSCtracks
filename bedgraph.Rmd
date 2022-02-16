@@ -25,6 +25,7 @@ GWAS[GWAS$P<10^-8,]
 GWAS$CHR<-paste0("chr",GWAS$CHR)
 GWAS$start<-GWAS$BP-1
 GWAS[GWAS$CHR=="chr1" & GWAS$BP==249220525,]
+psych::describe(GWAS$neglog10p)
 
 cat("track type=bedGraph name=PGC3_SCZ_wave3_public.v2 description=PGC3_SCZ_wave3_public.v2 visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph",append=F)#viewLimits=lower:upper maxHeightPixels=max:default:min  yLineMark=real-value yLineOnOff=on|off windowingFunction=maximum|mean|minimum smoothingWindow=off|2-16
 #file.show("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC browser track files/PGC3_SCZ_wave3_public.v2.bedgraph")
