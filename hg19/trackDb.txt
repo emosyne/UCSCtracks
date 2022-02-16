@@ -1,5 +1,5 @@
 track PGC3_SCZ_wave3_public.v2_hg19
-bigDataUrl https://figshare.com/s/49e3324a71a46cff4422
+bigDataUrl https://figshare.com/s/51b77a54082a492f09e5
 shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
