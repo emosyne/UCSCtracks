@@ -1,2 +1,2 @@
 genome hg19
-trackDb https://raw.githubusercontent.com/emosyne/UCSCtracks/main/hg19/trackDb.txt
+trackDb hg19/trackDb.txt
