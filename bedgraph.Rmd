@@ -59,7 +59,7 @@ cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 sort -k1,3 -u brainSNVs_hg19_UCSC.bed | bedtools sort -i > brainSNVs_hg19_UCSC_sort.bed
 
 
-bedToBigBed -type=bed6+4 brainSNVs_hg19_UCSC_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes brainSNVs_hg19_UCSC_sort.bb
+bedToBigBed -as=bb.as -type=bed6+4 brainSNVs_hg19_UCSC_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes brainSNVs_hg19_UCSC_sort.bb
 
 <!-- copy onto shire -->
 rsync -P brainSNVs_hg19_UCSC_sort.bb emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
