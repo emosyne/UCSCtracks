@@ -15,12 +15,12 @@ track Brain_SNVs
 bigDataUrl http://trackhub.genereg.net/eosimo/brainSNVs_hg19_UCSC_sort.bb
 shortLabel Brain_SNVs
 longLabel Brain tissue-specific SNPs within significant enhancer-promoters
-visibility full
+visibility pack
 type bigBed
 
 track LD_blocks
 bigDataUrl http://trackhub.genereg.net/eosimo/LDblocks_hg19_sort.bb
 shortLabel LD_blocks
 longLabel European Ancestry 1000 genomes LD blocks as per Gabriel et al 2002
-visibility full
+visibility dense
 type bigBed
