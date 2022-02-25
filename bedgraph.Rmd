@@ -11,10 +11,12 @@ https://genome.ucsc.edu/goldenPath/help/interact.html
 ```{r make bedgraph file for GWAS Manhattan plot}
 library(dplyr)
 #make bedgraph for SNPs
-GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/GWAS/scz2021/PGC3_SCZ_wave3_public.v2_GRCh37.tsv.gz",
-                        select = c("CHR",	"SNP",	"BP", "OR",	"P"), fill=T)
+# GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/GWAS/scz2021/PGC3_SCZ_wave3_public.v2_GRCh37.tsv.gz",
+#                         select = c("CHR",	"SNP",	"BP", "OR",	"P"), fill=T)
+GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis_hg19.txt",
+                        select = c("CHR",	"SNP",	"POS", "stdBeta",	"P"), fill=T)
 GWAS
-GWAS[GWAS$CHR=="1" & GWAS$BP==249220525,]
+#GWAS[GWAS$CHR=="1" & GWAS$BP==249220525,]
 hist(GWAS$P, breaks = 1000)
 GWAS$neglog10p <- -log10(GWAS$P)
 hist(GWAS$neglog10p, breaks = 1000)
@@ -23,16 +25,20 @@ GWAS[GWAS$P<10^-8,]
 # bedgraph format http://genome.ucsc.edu/goldenPath/help/bedgraph.html
 # chromA  chromStartA  chromEndA  dataValueA
 GWAS$CHR<-paste0("chr",GWAS$CHR)
-GWAS$start<-GWAS$BP-1
-GWAS[GWAS$CHR=="chr1" & GWAS$BP==249220525,]
+GWAS$start<-GWAS$POS-1
+#GWAS[GWAS$CHR=="chr1" & GWAS$BP==249220525,]
 psych::describe(GWAS$neglog10p)
+table(GWAS$CHR)
+GWAS[GWAS$CHR=="chr23"]$CHR<-"chrX"
 
-cat("track type=bedGraph name=PGC3_SCZ_wave3_public.v2 description=PGC3_SCZ_wave3_public.v2 visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph",append=F)#viewLimits=lower:upper maxHeightPixels=max:default:min  yLineMark=real-value yLineOnOff=on|off windowingFunction=maximum|mean|minimum smoothingWindow=off|2-16
-#file.show("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC browser track files/PGC3_SCZ_wave3_public.v2.bedgraph")
+#write out header line
+cat("track type=bedGraph name=SavageJansen_2018_intelligence_metaanalysis description=SavageJansen_2018_intelligence_metaanalysis visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",
+    file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis.bedgraph", append=F)
+#write out data to same file
 data.table::fwrite(
-  x = dplyr::select(.data = GWAS, CHR, start, BP, neglog10p) %>% na.exclude(), 
+  x = dplyr::select(.data = GWAS, CHR, start, POS, neglog10p) %>% na.exclude(), 
   append = T, sep = "\t", col.names = F, row.names = F, quote = F, scipen = 999,
-  file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph")
+  file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis.bedgraph")
 ```
 
 - make sure bed files are sorted
@@ -41,13 +47,13 @@ data.table::fwrite(
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 
 <!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
-sort -k1,3 -u PGC3_SCZ_wave3_public.v2_GRCh37.bedgraph | bedtools sort -i > PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph
+sort -k1,3 -u SavageJansen_2018_intelligence_metaanalysis.bedgraph | bedtools sort -i > SavageJansen_2018_intelligence_metaanalysis_sort.bedgraph
 
 
-bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/PGC3_SCZ_wave3_public.v2_GRCh37_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/PGC3_SCZ_wave3_public.v2_sort.bw
+bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/SavageJansen_2018_intelligence_metaanalysis_sort_hg19.bw
 
 <!-- copy onto shire -->
-rsync -P PGC3_SCZ_wave3_public.v2_sort.bw emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
+rsync -P /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/SavageJansen_2018_intelligence_metaanalysis_sort_hg19.bw emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
 ```
 
 

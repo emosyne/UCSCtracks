@@ -11,6 +11,19 @@ shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
 
+track SavageJansen_2018_intelligence_metaanalysis
+type bigWig 0 30.13
+autoScale on
+yLineOnOff on
+yLineMark 8
+color 128,0,128
+gridDefault on
+maxHeightPixels 150:100:10
+bigDataUrl http://trackhub.genereg.net/eosimo/SavageJansen_2018_intelligence_metaanalysis_sort_hg19.bw
+shortLabel IQ meta
+longLabel SavageJansen_2018_intelligence_metaanalysis with -log10 p values
+visibility full
+
 track Brain_SNVs
 bigDataUrl http://trackhub.genereg.net/eosimo/brainSNVs_hg19_UCSC_sort.bb
 shortLabel Brain_SNVs

@@ -1,6 +1,6 @@
 hub GWAS
-shortLabel Schizophrenia HCM GWAS hub
-longLabel Schizophrenia HCM GWAS hub
+shortLabel IQ Schizophrenia HCM GWAS hub
+longLabel IQ Schizophrenia HCM GWAS hub
 genomesFile genomes.txt
 email e.osimo@ic.ac.uk
 descriptionUrl README.html
