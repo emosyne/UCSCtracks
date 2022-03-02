@@ -1,6 +1,6 @@
 track PGC3_SCZ_wave3_public.v2_hg19
 type bigWig 0 39.18
-autoScale on
+autoScale off
 yLineOnOff on
 yLineMark 8
 color 128,0,128
