@@ -57,6 +57,20 @@ rsync -P /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data
 ```
 
 
+```{r make bed from csv}
+library(tidyverse)
+library(GenomicRanges)
+library(rtracklayer)
+
+LD_blocks <- makeGRangesFromDataFrame(
+  df = data.table::fread("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/EUR_phase3_autosomes_hg19.blocks.det"), 
+  start.field = "BP1",  end.field = "BP2", seqnames.field = "CHR", ignore.strand = T,
+  keep.extra.columns = F)
+seqlevelsStyle(LD_blocks) = "UCSC"
+
+export.bed(object=LD_blocks,con=paste0("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/EUR_phase3_autosomes_hg19_LDblocks.bed" ))
+
+```
 
 ``` {bash -- bed into bigBed: sort file, remove duplicated lines, convert to bb, upload}
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
@@ -71,7 +85,7 @@ bedToBigBed -as=bb.as -type=bed6+4 brainSNVs_hg19_UCSC_sort.bed http://hgdownloa
 bedToBigBed -type=bed6 LDblocks_hg19_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes LDblocks_hg19_sort.bb
 
 <!-- copy onto shire -->
-rsync -P LDblocks_hg19_sort.bb emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
+rsync -P EUR_phase3_autosomes_hg19_LDblocks.bb emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
 ```
 
 the link to load the track will be trackhub.genereg.net/eosimo/
