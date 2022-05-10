@@ -8,13 +8,17 @@ editor_options:
 - generate tracks in appropriate format (such as bed/interact.bed)
 https://genome.ucsc.edu/goldenPath/help/interact.html
 
-```{r make bedgraph file for GWAS Manhattan plot}
+##make bedgraph file for GWAS Manhattan plot
+
+```{r }
 library(dplyr)
 #make bedgraph for SNPs
 # GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/GWAS/scz2021/PGC3_SCZ_wave3_public.v2_GRCh37.tsv.gz",
 #                         select = c("CHR",	"SNP",	"BP", "OR",	"P"), fill=T)
 GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis_hg19.txt",
                         select = c("CHR",	"SNP",	"POS", "stdBeta",	"P"), fill=T)
+GWAS<-data.table::fread(file = "~/Google Drive/WORK/CF PhD/UCSC_browser/Tadros_GCST011211_hg19.UCSC.bed", fill=T,
+                        col.names = c("CHR",	"start",	"end", "SNP",	"P", "delete")) %>% select(-delete) %>% mutate(P=(as.numeric(P)))
 GWAS
 #GWAS[GWAS$CHR=="1" & GWAS$BP==249220525,]
 hist(GWAS$P, breaks = 1000)
@@ -32,13 +36,13 @@ table(GWAS$CHR)
 GWAS[GWAS$CHR=="chr23"]$CHR<-"chrX"
 
 #write out header line
-cat("track type=bedGraph name=SavageJansen_2018_intelligence_metaanalysis description=SavageJansen_2018_intelligence_metaanalysis visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",
-    file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis.bedgraph", append=F)
+cat("track type=bedGraph name=Tadros_2021_HCM_significants description=Tadros_2021_HCM_significants visibility=display_mode color=125,0,238 altColor=125,0,238 priority=high autoScale=on alwaysZero=on gridDefault=on graphType=bar\n",
+    file="/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/Tadros_2021_HCM_significants.bedgraph", append=F)
 #write out data to same file
 data.table::fwrite(
-  x = dplyr::select(.data = GWAS, CHR, start, POS, neglog10p) %>% na.exclude(), 
+  x = dplyr::select(.data = GWAS, CHR, start, end, neglog10p) %>% na.exclude(), 
   append = T, sep = "\t", col.names = F, row.names = F, quote = F, scipen = 999,
-  file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis.bedgraph")
+  file = "/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/Tadros_2021_HCM_significants.bedgraph")
 ```
 
 - make sure bed files are sorted
@@ -47,15 +51,17 @@ data.table::fwrite(
 cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 
 <!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
-sort -k1,3 -u SavageJansen_2018_intelligence_metaanalysis.bedgraph | bedtools sort -i > SavageJansen_2018_intelligence_metaanalysis_sort.bedgraph
+sort -k1,3 -u Tadros_2021_HCM_significants.bedgraph | bedtools sort -i > Tadros_2021_HCM_significants_sort.bedgraph
 
 
-bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/SavageJansen_2018_intelligence_metaanalysis_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/SavageJansen_2018_intelligence_metaanalysis_sort_hg19.bw
+bedGraphToBigWig /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/Tadros_2021_HCM_significants_sort.bedgraph http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/Tadros_2021_HCM_significants_sort_hg19.bw
 
 <!-- copy onto shire -->
-rsync -P /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/SavageJansen_2018_intelligence_metaanalysis_sort_hg19.bw emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
+rsync -P /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/UCSCtrackHub/data_files/Tadros_2021_HCM_significants_sort_hg19.bw emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
 ```
 
+
+##make bigBed file for e.g. LD blocks and other genomic features
 
 ```{r make bed from csv}
 library(tidyverse)

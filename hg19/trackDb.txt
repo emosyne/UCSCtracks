@@ -11,6 +11,19 @@ shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
 
+track Tadros_2021_HCM_significants_sort_hg19.bw
+type bigWig 0 21.9
+autoScale on
+yLineOnOff on
+yLineMark 8
+color 128,0,128
+gridDefault on
+maxHeightPixels 150:100:10
+bigDataUrl http://trackhub.genereg.net/eosimo/Tadros_2021_HCM_significants_sort_hg19.bw
+shortLabel Tadros_2021_HCM_GWAS
+longLabel Tadros_2021_HCM_GWAS with -log10 p values
+visibility full
+
 track SavageJansen_2018_intelligence_metaanalysis
 type bigWig 0 30.13
 autoScale on
