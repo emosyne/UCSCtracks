@@ -50,12 +50,7 @@ shortLabel IQ meta
 longLabel SavageJansen_2018_intelligence_metaanalysis with -log10 p values
 visibility full
 
-track Brain_SNVs May 22
-bigDataUrl http://trackhub.genereg.net/eosimo/May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19_sort.bb
-shortLabel Brain_SNVs
-longLabel Brain tissue-specific SNPs within significant enhancer-promoters MAY 22 VERSION with heart contactadded
-visibility pack
-type bigBed
+
 
 track LD_blocks
 bigDataUrl http://trackhub.genereg.net/eosimo/EUR_phase3_autosomes_hg19_LDblocks.bb

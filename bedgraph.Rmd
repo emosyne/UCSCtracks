@@ -72,7 +72,8 @@ library(GenomicRanges)
 library(rtracklayer)
 
 feature <- data.table::fread("/Users/eosimo/Google Drive/WORK/CF PhD/UCSC_browser/May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg38.csv", select = c("seqnames",    "start",      "end", "scaled_ES", "variant_id", "enh", "ensembl_gene_id")) %>% 
-  tidyr::unite(name, c("variant_id", "enh", "ensembl_gene_id")) %>% dplyr::rename(score=scaled_ES) %>%  #select(-variant) %>% 
+  tidyr::unite(name, c("variant_id", "enh", "ensembl_gene_id")) %>% dplyr::rename(score=scaled_ES) %>% 
+  mutate(score=round(scales::rescale(score, to = c(0,1000)),0)) %>% #select(-variant) %>% 
   makeGRangesFromDataFrame(
   start.field = "start",  end.field = "end", seqnames.field = "seqnames", ignore.strand = T,
   keep.extra.columns = T)
@@ -97,14 +98,13 @@ cd /Users/eosimo/Google\ Drive/WORK/CF\ PhD/UCSC_browser/
 <!-- sort and remove duplications (-u) based on first 3 cols (-k1,3) only -->
 sort -k1,3 -u May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19.bed | bedtools sort -i > May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19_sort.bed
 
-
+<!-- simple bed file -->
 bedToBigBed -type=bed6 May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19_sort.bb
 
 #If you add extra fields to your bigBed file, you must include an AutoSql format (.as) file describing the fields. In this file, all fields (standard and non-standard) are described with a short internal name and also a human-readable description. For more information on AutoSql, see Kent and Brumbaugh, 2002, as well as examples of .as files in this directory. https://genome.ucsc.edu/goldenPath/help/bigBed.html
 bedToBigBed -as=bb.as -type=bed6+4 brainSNVs_hg19_UCSC_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes brainSNVs_hg19_UCSC_sort.bb
 
-<!-- simple bed file -->
-bedToBigBed -type=bed6 LDblocks_hg19_sort.bed http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes LDblocks_hg19_sort.bb
+
 
 <!-- copy onto shire -->
 rsync -P May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_p0.05_meta_BRAIN_hg19_sort.bb emanuele@193.60.222.200:/mnt/storage/www/ucsc_hub/eosimo/
