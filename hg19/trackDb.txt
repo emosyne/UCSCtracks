@@ -57,6 +57,13 @@ longLabel Brain tissue-specific SNPs within Rad E-Ps MAY 22 VERSION with more 3D
 visibility pack
 type bigBed
 
+track Heart_SNVs_May_22
+bigDataUrl May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_HEART_hg38_sort.bb
+shortLabel Heart_SNVs
+longLabel Heart tissue-specific SNPs within Rad E-Ps MAY 22 VERSION with more 3D tissues added
+visibility pack
+type bigBed
+
 track LD_blocks
 bigDataUrl http://trackhub.genereg.net/eosimo/EUR_phase3_autosomes_hg19_LDblocks.bb
 shortLabel LD_blocks
