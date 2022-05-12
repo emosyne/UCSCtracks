@@ -11,7 +11,7 @@ shortLabel PGC3_SCZ_wave3
 longLabel PGC3_SCZ_wave3_public.v2 with -log10 p values
 visibility full
 
-track Tadros_2021_HCM_significants_sort_hg19.bw
+track Tadros_2021_HCM_significants_sort_hg19
 type bigWig 0 21.9
 autoScale on
 yLineOnOff on
@@ -22,6 +22,19 @@ maxHeightPixels 150:100:10
 bigDataUrl http://trackhub.genereg.net/eosimo/Tadros_2021_HCM_significants_sort_hg19.bw
 shortLabel Tadros_2021_HCM_GWAS
 longLabel Tadros_2021_HCM_GWAS with -log10 p values
+visibility full
+
+track Sean
+type bigWig 0 48.86
+autoScale on
+yLineOnOff on
+yLineMark 8
+color 128,0,128
+gridDefault on
+maxHeightPixels 150:100:10
+bigDataUrl http://trackhub.genereg.net/eosimo/Sean_2022_HCM_sort_hg19.bw
+shortLabel Sean
+longLabel Sean with -log10 p values
 visibility full
 
 track SavageJansen_2018_intelligence_metaanalysis
@@ -40,7 +53,7 @@ visibility full
 track Brain_SNVs
 bigDataUrl http://trackhub.genereg.net/eosimo/brainSNVs_hg19_UCSC_sort.bb
 shortLabel Brain_SNVs
-longLabel Brain tissue-specific SNPs within significant enhancer-promoters
+longLabel Brain tissue-specific SNPs within significant enhancer-promoters FEB 22 VERSION
 visibility pack
 type bigBed
 
