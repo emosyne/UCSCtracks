@@ -58,7 +58,7 @@ visibility pack
 type bigBed
 
 track Heart_SNVs_May_22
-bigDataUrl May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_HEART_hg38_sort.bb
+bigDataUrl http://trackhub.genereg.net/eosimo/May22_significant_SNVs_allEPpairs_ESpos_someContact_allTotScores_anyTissue_overlapeQTLsMeta_perSNV_HEART_hg38_sort.bb
 shortLabel Heart_SNVs
 longLabel Heart tissue-specific SNPs within Rad E-Ps MAY 22 VERSION with more 3D tissues added
 visibility pack
